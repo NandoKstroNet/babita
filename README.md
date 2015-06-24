@@ -1,6 +1,6 @@
 # Babita Framework 1
 
-BF1 é um nano framework inspirado no Silex, Slim e Simple MVC Framework (Utiliza alguns componentes dos mesmos no core). Foi desenvolvido / implementado para atender algumas necessidades do SGAMA - Sistema de Gestão Acadêmica do Maranhão. BF1 é pequeno, rápido e lindo. O toolkit possibilita o desenolvimento de projetos flexiveis sem burocracia, você pode fazer um clone / download e começar a trabalhar imediatamente.
+BF1 é um nano framework inspirado no Silex, Slim e Simple MVC Framework (Utiliza alguns componentes dos mesmos). Foi desenvolvido / implementado para atender algumas necessidades do SGAMA - Sistema de Gestão Acadêmica do Maranhão. BF1 é pequeno, rápido e lindo. O toolkit possibilita o desenolvimento de projetos flexiveis sem burocracia, você pode fazer um clone / download e começar a trabalhar imediatamente.
 
 ### Exemplos
 
