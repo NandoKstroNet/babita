@@ -1,6 +1,6 @@
 # Babita Framework 1
 
-BF1 é um nano framework inspirado no Silex, Slim e Simple MVC Framework (Utiliza alguns componentes dos mesmos). Foi desenvolvido para atender algumas necessidades do SGAMA - Sistema de Gestão Acadêmica do Maranhão. BF1 é pequeno, rápido e lindo. O toolkit possibilita o desenolvimento de projetos flexiveis sem burocracia, você pode coloca-lo em seu projeto e começar a trabalhar imediatamente.
+BF1 é um nano framework inspirado no Silex, Slim e Simple MVC Framework (Utiliza alguns componentes dos mesmos). Foi desenvolvido / implementado para atender algumas necessidades do SGAMA - Sistema de Gestão Acadêmica do Maranhão. BF1 é pequeno, rápido e lindo. O toolkit possibilita o desenolvimento de projetos flexiveis sem burocracia, você pode fazer um clone / download e começar a trabalhar imediatamente.
 
 ### Exemplos
 
@@ -10,6 +10,25 @@ Router::get('/', function() {
 });
 
 Router::run();
+```
+
+#### A principal característica do BF1 é simplicidade e a forma desenvolvida para acessar os recursos do sistema.
+
+Veja a simplicidade do `index.php`
+Com apenas isso você já pode desenvolver seu seus controllers e executa-los através da url
+
+Você pode passar diversos parâmetros pela URL
+````
+Ex. 1: www.dominio.com/controller/method/parameter
+Ex. 2: www.dominio.com/controller/method/parameter1/parameter2
+````
+
+```PHP
+
+require_once "app/start.php";
+
+use \Core\Router;
+Router::autoRun();
 ```
 
 BF1 também suporta lambda URIs:
@@ -52,3 +71,11 @@ Router::error(function() {
 ```
 
 Se você não especificar um callback de erro, o BF1 executa o controller padrão para este fim.
+
+## Instalação
+
+1. Faça o download
+2. Descompacte o pacote
+4. Edite o arquivo index.php e configure suas rotas
+5. Edite o aquivo app/Core/Config.php e defina suas configurações de banco de dados e constantes do sistema.
+6. Faça o upload dos arquivos para o seu servidor e seja feliz :)
