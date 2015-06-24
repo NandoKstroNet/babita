@@ -7,17 +7,18 @@ class Config
 {
     public function __construct()
     {
-        //turn on output buffering
+        //Ativa o buffer de saída
         ob_start();
 
-        //set default controller and method for legacy calls
-        define('DEFAULT_CONTROLLER', 'welcome');
+        //Definir controller padrão e método para chamadas legados
+        define('DEFAULT_CONTROLLER', 'Welcome');
         define('DEFAULT_METHOD', 'index');
 
-        //set the default template
+        //Denifir template padrão
         define('TEMPLATE', 'default');
 
-        //database details ONLY NEEDED IF USING A DATABASE
+        //Define constantes para ambiente desenvolvimento (localhost)
+        
         if( in_array( $_SERVER['REMOTE_ADDR'], array( '127.0.0.1', '::1' )) ){
         	
 	        define('DB_TYPE', 'mysql');
@@ -26,45 +27,46 @@ class Config
 	        define('DB_USER', 'root');
 	        define('DB_PASS', '123456');
 	        define('PREFIX', 'bab_');
-	        
-	        //site address
 	        define('DIR', 'http://localhost/babita');
         
         }else{
         
+        	// Define constantes para ambiente de produção (online)
+        	
 	        define('DB_TYPE', 'mysql');
 	        define('DB_HOST', 'localhost');
 	        define('DB_NAME', 'sgama');
 	        define('DB_USER', 'root');
 	        define('DB_PASS', '123456');
 	        define('PREFIX', 'bab_');
-	        
-	        //site address
 	        define('DIR', 'http://localhost/babita');
         
         }
 
-        //set prefix for sessions
+        //Define prefixo de sessão
         define('SESSION_PREFIX', 'bab');
         
+        //Define coluna datetime de inserção e atualização no banco de dados
         define('DATETIME_INSERT', 'datetime_insert');
         define('DATETIME_UPDATE', 'datetime_update');
+        
+        //Define chave de encriptação de dados
         define('CHAVE_ENCRYPT', '20fe687d58d6295cd94ba4f4ffe4bab4');
 
-        //optionall create a constant for the name of the site
+        //Define título do site / projeto
         define('SITETITLE', 'Babita Framework V1');
 
-        //optionall set a site email address
+        //Email do administrador para notificação de erros no sistema
         define('SITEEMAIL', 'fabio@fabioassuncao.com.br');
 
-        //turn on custom error handling
+        //Ativa a manipulação de erro personalizada
         set_exception_handler('Core\Logger::ExceptionHandler');
         set_error_handler('Core\Logger::ErrorHandler');
 
-        //set timezone
+        //Define timezone
         date_default_timezone_set('America/Sao_Paulo');
 
-        //start sessions
+        //Inicia sessões
         Session::init();
     }
 }

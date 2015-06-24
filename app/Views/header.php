@@ -33,8 +33,6 @@
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="<?= DIR ?>">Home</a></li>
-            <li><a href="<?= DIR ?>/get">GET</a></li>
-            <li><a href="<?= DIR ?>/home/post">POST</a></li>
             <li><a href="<?= DIR ?>/home/teste/param1/param2/param3">Url com parâmetros</a></li>
           </ul>
         </div><!--/.nav-collapse -->

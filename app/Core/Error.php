@@ -40,9 +40,19 @@ class Error extends Controller
         $data['title'] = '404';
         $data['error'] = $this->error;
 
-        View::render('site/topo', $data);
-        View::render('site/erro404', $data);
-        View::render('site/rodape', $data);
+print <<<EOT
+	<!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8"/>
+            <title>Erro</title>
+        </head>
+        <body>
+  			<p style="text-align: center;font-size: 2em;background-color: #838383;padding: 20px;color: #fff;border-radius: 10px;">404 - Página não encontrada.</p>
+        </body>
+    </html>
+EOT;
+        exit;
     }
 
     /**

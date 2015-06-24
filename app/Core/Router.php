@@ -11,10 +11,7 @@ namespace Core;
  * @method static Router head(string $route, Callable $callback)
  */
 class Router {
-
-    //Alfabeto params rotas
-    public static $letters = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ');
-
+	
     // Fallback for auto dispatching feature.
     public static $fallback = false;
 
@@ -50,76 +47,6 @@ class Router {
         array_push(self::$callbacks, $callback);
     }
 
-    public static function getUrl(){
-         return "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-     }
-     
-
-    /**
-     * Deprecated
-     * 
-     * @param  string com a area especifica de uma parte url
-     * @return function callback
-     * Ex.: 
-     *      Router::position() -> Return array;
-     *      Router::position(int) -> Return array ints;
-     *      Router::position(1) -> Return sring position route;
-     *      Router::position(a) -> Return sring position route;
-     *      Router::position(a, 'app') -> Return boolen;
-     *      Router::position(a, 'app', fn callback) -> Return sring position route;
-     */
-
-    public static function position(){
-        $args = func_get_args();
-
-        if(isset($args[0])){
-            $args[0] = is_string($args[0]) ? strtoupper($args[0]) : $args[0];
-        }
-
-        $path_info = explode('/', ltrim( $_SERVER['QUERY_STRING'], '/' ));
-        $route = array();
-
-        for ($i = 0; $i < count($path_info); $i++){
-            $route[$i] = $path_info[$i];
-        }
-
-       //Exibir apenas array com indices numericos
-       if(count($args) == 1 && $args[0] == 'NUMBERS'){
-	       	return $route;
-        }
-        
-        for ($i = 0; $i < count($path_info); $i++){
-            if(count(self::$letters) == $i){
-                break;
-            }
-
-            $letter = self::$letters[$i];
-            $route[$letter] = $path_info[$i];
-        }
-
-
-        switch (count($args)) {
-            case 1:
-            	
-                return isset($route[$args[0]]) ? $route[$args[0]] : null ;
-                break;
-
-            case 2:
-                return $args[1] == $route[$args[0]] ? true : false;
-                break;
-
-            case 3:
-                return $args[1] == $route[$args[0]] ? $args[2]() : null;
-                break;
-             
-            default:
-                return $route;
-                break;
-
-         }
-
-    }
-
     /**
      * Defines callback if route is not found
      * @param   string $callback
@@ -144,9 +71,10 @@ class Router {
      * @param  string $msg      
      */
     public static function invokeObject($callback, $matched = null, $msg = null){
-
+    	
         //grab all parts based on a / separator and collect the last index of the array
         $params = explode('/',$callback);
+        
         $first = array_shift($params);
 
         //grab the controller name and method call
@@ -160,80 +88,96 @@ class Router {
         	$path[$k] = ucfirst($path[$k]);
         }
         
-        $path = implode('\\', $path);
-        $method = $segments[1];
+        $new_path = implode('\\', $path);
         
-        $controller = new $path($msg);       
-
-       if($matched == null){
-
-            //call method
-            if( method_exists($controller, $method) ){
-            	$controller->$method($params);
-            }else{
-            	 self::invokeObject('Core\\Error@index');
-            }
-
-        } else {
-
-            //call method and pass in array keys as params
-            call_user_func_array(array($controller, $method), $matched);
-        
+        if(!$path[1]){
+        	
+        	$new_path .= DEFAULT_CONTROLLER;
+        	$method = DEFAULT_METHOD;
+        	
+        } else{
+        	
+        	$method = $segments[1];
+        	
         }
+        
+
+       //verifica se classe existe
+       if(class_exists($new_path)){
+       	
+	       $controller = new $new_path($msg);       
+	
+	       if($matched == null){
+	
+	            //verifica se método existe
+	            if( method_exists($controller, $method) ){
+	            	$controller->$method($params);
+	             }else{
+	             	 self::invokeObject('Core\\Error@index');
+	             }
+	
+	        } else {
+	
+	            //call method and pass in array keys as params
+	            call_user_func_array(array($controller, $method), $matched);
+	        
+	        }
+       }else{
+       		self::invokeObject('Core\\Error@index');
+       }
     }
 
+
+    
     /**
-     * autoDispatch by Volter9
      * Ability to call controllers in their controller/model/param way
      */
-    public static function autoRun() {
+//     public static function autoRun() {
 
-        $uri = parse_url($_SERVER['QUERY_STRING'], PHP_URL_PATH);
-        $uri = trim($uri, ' /');
-        $parts = explode('/', $uri);
+//         $uri = parse_url($_SERVER['QUERY_STRING'], PHP_URL_PATH);
+//         $uri = trim($uri, ' /');
+//         $parts = explode('/', $uri);
 
-        $controller = $uri !== ''      && isset($parts[0])  ? $parts[0] : DEFAULT_CONTROLLER;
-        $method     = $uri !== ''      && isset($parts[1])  ? $parts[1] : DEFAULT_METHOD;
-        $args       = is_array($parts) && count($parts) > 2 ? array_slice($parts, 2) : array(); 
+//         $controller = $uri !== ''      && isset($parts[0])  ? $parts[0] : DEFAULT_CONTROLLER;
+//         $method     = $uri !== ''      && isset($parts[1])  ? $parts[1] : DEFAULT_METHOD;
+//         $args       = is_array($parts) && count($parts) > 2 ? array_slice($parts, 2) : array(); 
 
-        $char_position = strpos($controller,'&');
-        if ($char_position > 0 ) {
-            $ctp = explode('&', $controller);
-            $controller = $ctp[0];
-        }
+//         $char_position = strpos($controller,'&');
+//         if ($char_position > 0 ) {
+//             $ctp = explode('&', $controller);
+//             $controller = $ctp[0];
+//         }
 
-        $char_position2 = strpos($method,'&');
-        if ($char_position2 > 0 ) {
-            $ctp = explode('&', $method);
-            $method = $ctp[0];
-        }
+//         $char_position2 = strpos($method,'&');
+//         if ($char_position2 > 0 ) {
+//             $ctp = explode('&', $method);
+//             $method = $ctp[0];
+//         }
 
-        if ($args != null) {
-            $char_position3 = strpos($args[0],'&');
-            if ($char_position3 > 0 ) {
-                $ctp = explode('&', $yes);
-                $args[0] = $ctp[0];
-            }
-        }
+//         if ($args != null) {
+//             $char_position3 = strpos($args[0],'&');
+//             if ($char_position3 > 0 ) {
+//                 $ctp = explode('&', $yes);
+//                 $args[0] = $ctp[0];
+//             }
+//         }
 
-        // Check for file
-        if (!file_exists('app/Controllers/' . $controller . '.php')) {
-            return false;
-        }
+//         if (!file_exists('app/Controllers/' . $controller . '.php')) {
+//             return false;
+//         }
 
-        $controller = '\Controllers\\' . $controller;
-        $c = new $controller;
+//         $controller = '\Controllers\\' . $controller;
+//         $c = new $controller;
 
-        if (method_exists($c, $method)) {
+//         if (method_exists($c, $method)) {
             
-            $c->$method($args);
-            //found method so stop
-            return true;
+//             $c->$method($args);
+//             return true;
 
-        }
+//         }
 
-        return false;
-    }
+//         return false;
+//     }
 
     /**
      * Runs the callback for the given request
@@ -341,12 +285,7 @@ class Router {
             // end foreach
         }
 
-        if (self::$fallback) {
-            //call the auto dispatch method
-            $found_route = self::autoRun();
-        }
-
-        // run the error callback if the route was not found
+		// run the error callback if the route was not found
         if (!$found_route) {
             if (!self::$error_callback) {
                 self::$error_callback = function() {
@@ -357,7 +296,7 @@ class Router {
             if(!is_object(self::$error_callback)){
 
                 //call object controller and method
-                self::invokeObject(self::$error_callback,null,'No routes found.');
+                self::invokeObject(self::$error_callback, null, 'No routes found.');
                 if (self::$halts) return;
 
             } else {
@@ -370,4 +309,16 @@ class Router {
         }
 
     }
+    
+    public static function autoRun(){
+    	self::any('/', 'Controllers\\' . DEFAULT_CONTROLLER . '@'. DEFAULT_METHOD);
+    	
+    	self::any('/(:any)/?(:all)', function($c, $m) {
+    		$path = ($m) ? "Controllers\\{$c}@{$m}" : "Controllers\\{$c}@index";
+    		self::invokeObject($path);
+    	});
+    	
+    	self::run();
+    }
+    
 }
