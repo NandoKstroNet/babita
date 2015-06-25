@@ -1,16 +1,43 @@
 <?php
 
-namespace Helpers;
-
 /*!
  * Medoo database framework
- * http://medoo.in
- * Version 0.9.8.3
- *
- * Copyright 2015, Angel Lai
- * Released under the MIT license
- */
-class medoo
+* http://medoo.in
+* Version 0.9.8.3
+*
+* Copyright 2015, Angel Lai
+* Released under the MIT license
+*/
+
+/**
+*
+*	$database = new Helpers/Medoo([
+*
+*		'database_type' => 'mysql',
+*		'database_name' => 'name',
+*		'server' => 'localhost',
+*		'username' => 'your_username',
+*		'password' => 'your_password',
+*		'charset' => 'utf8',
+*	 
+*		// optional
+*		'port' => 3306,
+*		// driver_option for connection, read more from http://www.php.net/manual/en/pdo.setattribute.php
+*		'option' => [
+*			PDO::ATTR_CASE => PDO::CASE_NATURAL
+*		]
+*	]);
+*	 
+*	$database->insert("account", [
+*		"user_name" => "foo",
+*		"email" => "foo@bar.com"
+*	]);
+*
+*/
+
+namespace Helpers;
+
+class Medoo
 {
 	// General
 	protected $database_type;
