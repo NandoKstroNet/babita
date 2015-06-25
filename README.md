@@ -41,7 +41,7 @@ Router::get('/nome/(:any)', function($nome) {
 Router::run();
 ```
 
-Você também pode fazer requests de métodos HTTP:
+Você também pode fazer requests com os verbos HTTP:
 
 ```PHP
 Router::get('/', function() {
