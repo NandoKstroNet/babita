@@ -8,6 +8,8 @@ namespace Core;
  * @date June 27, 2014
  * @date updated May 18 2015
  */
+
+use Helpers\Validations;
 class View
 {
     /**
@@ -166,7 +168,7 @@ class View
     		if (is_array($valor)) {
     			$valor = self::filterArray($valor);
     		} else {
-    			$array[$chave] = self::filter($valor, 'string');
+    			$array[$chave] = Validations::filter($valor, 'string');
     		}
     
     	}
