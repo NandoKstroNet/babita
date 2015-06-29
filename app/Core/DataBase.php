@@ -98,7 +98,7 @@ class DataBase extends PDO
 	 * @return array            return array com os dados obtidos
 	 */
 
-	public function find($table, $data = array()){
+	public function find($table, $data = array(), $mode = "fetchAll", $fetchMode = PDO::FETCH_ASSOC){
 		
 		$sql =  "SELECT * FROM $table ";
 		
@@ -108,11 +108,11 @@ class DataBase extends PDO
 			$sql .= $where['where'];
 			$data = $where['data'];
 
-			return $this->select($sql, $data);
+			return $this->select($sql, $data, $mode, $fetchMode);
 		}
 		
 		else{
-			return $this->select($sql);
+			return $this->select($sql, array(), $mode, $fetchMode);
 		}
 		
 	}
@@ -154,7 +154,7 @@ class DataBase extends PDO
 	 * @return array            return array com os dados obtidos
 	 */
 
-	public function select($sql,$array = array(), $fetchMode = PDO::FETCH_ASSOC){
+	public function select($sql, $array = array(), $mode = "fetchAll", $fetchMode = PDO::FETCH_ASSOC){
 
 		$stmt = $this->prepare($sql);
 		foreach($array as $key => $value){
@@ -166,8 +166,14 @@ class DataBase extends PDO
 		}
 
 		$stmt->execute();
-		return $stmt->fetchAll($fetchMode);
+		if($mode == "fetchAll"){
+			return $stmt->fetchAll($fetchMode);
+		}else if($mode == "fetch"){
+			return $stmt->fetch($fetchMode);
+		}
+		
 	}
+	
 
 	/**
 	 * Metodo para inserir registros
