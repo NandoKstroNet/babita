@@ -106,8 +106,6 @@ class View
     			} else if (!mb_check_encoding($value, 'UTF-8')) {
     				$value = utf8_encode($value);
     
-    			} else {
-    				$value = utf8_encode($value);
     			}
     
     			$novo[$i] = $value;
