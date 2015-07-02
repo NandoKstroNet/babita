@@ -21,7 +21,7 @@ class Data
 	 */
 	public static function maybeUnserialize( $original ) {
 		if ( self::isSerialized( $original ) ) // don't attempt to unserialize data that wasn't serialized going in
-			return @unserialize( $original );
+			return stripcslashes( unserialize( $original ) );
 		return $original;
 	}
 	
@@ -131,12 +131,12 @@ class Data
 	 */
 	function maybeSerialize( $data ) {
 		if ( is_array( $data ) || is_object( $data ) )
-			return serialize( $data );
+			return addslashes( serialize( $data ) );
 	
 		// Double serialization is required for backward compatibility.
 		// See https://core.trac.wordpress.org/ticket/12930
 		if ( self::isSerialized( $data, false ) )
-			return serialize( $data );
+			return addslashes( serialize( $data ) );
 	
 		return $data;
 	}
