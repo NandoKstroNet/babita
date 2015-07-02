@@ -26,6 +26,7 @@ class Config
 	        define('DB_NAME', 'sgama');
 	        define('DB_USER', 'root');
 	        define('DB_PASS', '123456');
+	        define('DB_PORT', '3306');
 	        define('PREFIX', 'bab_');
 	        define('DIR', 'http://localhost/babita');
         
@@ -38,6 +39,7 @@ class Config
 	        define('DB_NAME', 'sgama');
 	        define('DB_USER', 'root');
 	        define('DB_PASS', '123456');
+	        define('DB_PORT', '3306');
 	        define('PREFIX', 'bab_');
 	        define('DIR', 'http://localhost/babita');
         

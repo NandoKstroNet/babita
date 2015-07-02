@@ -31,7 +31,8 @@ class DataBase extends PDO
             'host' => DB_HOST,
             'name' => DB_NAME,
             'user' => DB_USER,
-            'pass' => DB_PASS
+            'pass' => DB_PASS,
+        	'port' => DB_PORT
         ) : $group;
 
         // Group information
@@ -40,9 +41,10 @@ class DataBase extends PDO
         $name = $group['name'];
         $user = $group['user'];
         $pass = $group['pass'];
+        $port = $group['port'];
 
         // ID for database based on the group information
-        $id = "$type.$host.$name.$user.$pass";
+        $id = "$type.$host.$port.$name.$user.$pass";
 
         // Checking if the same
         if (isset(self::$instances[$id])) {
@@ -53,7 +55,7 @@ class DataBase extends PDO
             // I've run into problem where
             // SET NAMES "UTF8" not working on some hostings.
             // Specifiying charset in DSN fixes the charset problem perfectly!
-            $instance = new DataBase("$type:host=$host;dbname=$name;charset=utf8", $user, $pass);
+            $instance = new DataBase("$type:host=$host;port=$port;dbname=$name;charset=utf8", $user, $pass);
             $instance->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
             // Setting Database into $instances to avoid duplication
