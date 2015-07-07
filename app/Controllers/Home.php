@@ -2,6 +2,7 @@
 namespace Controllers;
 
 use Core\Controller;
+use Core\View;
 
 class Home extends Controller
 {
@@ -11,16 +12,16 @@ class Home extends Controller
 
     	$data = array('data 1', 'data 2');
     	
-        $this->view->render('header');
-        $this->view->render('home', $data);
-        $this->view->render('footer');
+        View::render('header');
+        View::render('home', $data);
+        View::render('footer');
     }
 
     
     public function teste($param)
     {
 
-    	$this->view->output($param, 'json');
+    	View::output($param, 'json');
 
     }
 }

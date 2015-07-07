@@ -9,6 +9,7 @@ class Config
     {
         //Ativa o buffer de saída
         ob_start();
+        
 
         //Definir controller padrão e método para chamadas legados
         define('DEFAULT_CONTROLLER', 'Welcome');
@@ -17,33 +18,14 @@ class Config
         //Denifir template padrão
         define('TEMPLATE', 'default');
 
-        //Define constantes para ambiente desenvolvimento (localhost)
-        
-        if( in_array( $_SERVER['REMOTE_ADDR'], array( '127.0.0.1', '::1' )) ){
-        	
-	        define('DB_TYPE', 'mysql');
-	        define('DB_HOST', 'localhost');
-	        define('DB_NAME', 'sgama');
-	        define('DB_USER', 'root');
-	        define('DB_PASS', '123456');
-	        define('DB_PORT', '3306');
-	        define('PREFIX', 'bab_');
-	        define('DIR', 'http://localhost/babita');
-        
-        }else{
-        
-        	// Define constantes para ambiente de produção (online)
-        	
-	        define('DB_TYPE', 'mysql');
-	        define('DB_HOST', 'localhost');
-	        define('DB_NAME', 'sgama');
-	        define('DB_USER', 'root');
-	        define('DB_PASS', '123456');
-	        define('DB_PORT', '3306');
-	        define('PREFIX', 'bab_');
-	        define('DIR', 'http://localhost/babita');
-        
-        }
+        define('DB_TYPE', 'mysql');
+        define('DB_HOST', 'localhost');
+        define('DB_NAME', 'sgama');
+        define('DB_USER', 'root');
+        define('DB_PASS', '123456');
+        define('DB_PORT', '3306');
+        define('PREFIX', 'bab_');
+        define('DIR', 'http://localhost/babita');
 
         //Define prefixo de sessão
         define('SESSION_PREFIX', 'bab');
@@ -70,5 +52,10 @@ class Config
 
         //Inicia sessões
         Session::init();
+        
+        //Habilita os erros em ambiente local
+        ini_set('display_errors', 1);
+        ini_set('log_errors', 1);
+        error_reporting(E_ALL);
     }
 }

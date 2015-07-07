@@ -10,6 +10,8 @@ namespace Core;
  */
 
 use Helpers\Validations;
+use Delpers\Data;
+
 class View
 {
     /**
@@ -127,12 +129,19 @@ class View
     	//DEBUG ARRAY
     	switch ($tipo) {
     
+    		case 'pr':
+    		case 'printr':
+    		case 'print_r':
     		case 'text':
     			print'<pre>';
     			print_r($data);
     			print'</pre>';
     			break;
     
+    			
+    		case 'vd':
+    		case 'vardump':
+    		case 'var_dump':
     		case 'details':
     			print'<pre>';
     			var_dump($data);
