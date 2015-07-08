@@ -166,13 +166,10 @@ class Encrypt
 	 */
 
 	
-	public static function encrypt($string){
-		
-		$string *= 9754;
+	public static function convertID($string)
+	{
 		return self::alphaID($string);
-		
 	}
-	
 	
 	/**
 	 * Metodo para decriptar dados
@@ -180,15 +177,15 @@ class Encrypt
 	 * @return string dado decriptado
 	 */
 	
-	public static function decrypt($string){
+	public static function revertID($string)
+	{
 		
 		$string = self::alphaID($string, true);
-		return $string /= 9754;
-		
 		
 	}
 	
-	public static function encryptArray($array, $index){
+	public static function encryptArray($array, $index)
+	{
 		if (is_array($array)) {
 			
 			foreach ($array as $key => $value){
@@ -202,4 +199,45 @@ class Encrypt
 		}
 	}
 	
+	/**
+	 * Metodo para criar hash com base64
+	 * @param string valor que sera encriptado
+	 * @return string dado codificado
+	 */
+	
+	public static function encode($data)
+	{
+		$data = base64_encode($data);
+		$data .= CHAVE_ENCRYPT;
+		return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
+	}
+	
+	/**
+	 * Metodo para decodificar hash com base64
+	 * @param string valor que sera encriptado
+	 * @return string dado decodificado
+	 */
+	
+	public static function decode($data)
+	{
+		$data =  base64_decode(str_pad(strtr($data, '-_', '+/'), strlen($data) % 4, '=', STR_PAD_RIGHT));
+		return base64_decode( rtrim($data, CHAVE_ENCRYPT) );
+		
+	}
+	
+	/**
+	 * Metodo para criar hash de mão única
+	 * @param string valor que sera encriptado
+	 * @return string dado encriptado
+	 */
+	
+	public static function hash($data)
+	{
+		return sha1( self::encode($data) .  CHAVE_ENCRYPT);
+	}
+	
+	public static function token()
+	{
+		return md5(uniqid(rand(), TRUE) . CHAVE_ENCRYPT);
+	}
 }

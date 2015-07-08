@@ -3,9 +3,6 @@ namespace Helpers;
 
 /**
  * Assets static helper
- *
- * @author volter9
- * @author QsmaPL
  * @date 27th November, 2014
  * @date May 18 2015
  */

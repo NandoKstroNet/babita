@@ -20,7 +20,7 @@ class Config
 
         define('DB_TYPE', 'mysql');
         define('DB_HOST', 'localhost');
-        define('DB_NAME', 'sgama');
+        define('DB_NAME', 'babita');
         define('DB_USER', 'root');
         define('DB_PASS', '123456');
         define('DB_PORT', '3306');

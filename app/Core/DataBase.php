@@ -175,7 +175,6 @@ class DataBase extends PDO
 		}
 		
 	}
-	
 
 	/**
 	 * Metodo para inserir registros
@@ -196,9 +195,14 @@ class DataBase extends PDO
 		$stmt = $this->prepare("INSERT INTO $table ($fieldNames) VALUES ($fieldValues)");
 
 		foreach($data as $key => $value){
+			
 			if(is_int($value)){
 				$stmt->bindValue(":$key", $value, PDO::PARAM_INT);
-			} else {
+				
+			} else if(is_string($value)){
+				$stmt->bindValue(":$key", $value, PDO::PARAM_STR);
+				
+			} else{
 				$stmt->bindValue(":$key", $value);
 			}
 		}
@@ -242,9 +246,14 @@ class DataBase extends PDO
 		$stmt = $this->prepare("UPDATE $table SET $fieldDetails WHERE $whereDetails");
 
 		foreach($data as $key => $value){
+			
 			if(is_int($value)){
 				$stmt->bindValue(":$key", $value, PDO::PARAM_INT);
-			} else {
+			
+			} else if(is_string($value)){
+				$stmt->bindValue(":$key", $value, PDO::PARAM_STR);
+			
+			} else{
 				$stmt->bindValue(":$key", $value);
 			}
 		}
@@ -252,7 +261,11 @@ class DataBase extends PDO
 		foreach($where as $key => $value){
 			if(is_int($value)){
 				$stmt->bindValue(":$key", $value, PDO::PARAM_INT);
-			} else {
+				
+			} else if(is_string($value)){
+				$stmt->bindValue(":$key", $value, PDO::PARAM_STR);
+				
+			} else{
 				$stmt->bindValue(":$key", $value);
 			}
 		}
@@ -315,7 +328,7 @@ class DataBase extends PDO
 
 	public function fieldsTable($table){
 		//RETORNA UM ARRAY COM TODOS OS CAMPOS DE UMA TABELA
-		$results = $this->select("SHOW COLUMNS FROM $table");
+		$results = $this->select("SHOW COLUMNS FROM {$table}");
 		
 		$fields_table = array();
 		foreach ($results as $fields){

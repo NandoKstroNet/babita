@@ -4,7 +4,6 @@ namespace Helpers;
 /*
  * Tags Class
  *
- 
  * @version 2.2
  * @date May 18 2015
  */
