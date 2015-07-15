@@ -11,7 +11,7 @@ namespace Core;
  * @method static Router head(string $route, Callable $callback)
  */
 class Router {
-	
+    
     // Fallback for auto dispatching feature.
     public static $fallback = false;
 
@@ -39,8 +39,10 @@ class Router {
      */
     public static function __callstatic($method, $params){
 
-        $uri = dirname($_SERVER['PHP_SELF']).'/'.$params[0];
-        $callback = $params[1];
+    	$php_self = $_SERVER['PHP_SELF'];
+    	
+        $uri = dirname($php_self).'/'.$params[0];
+        $callback = $params[1];        
 
         array_push(self::$routes, $uri);
         array_push(self::$methods, strtoupper($method));
@@ -52,7 +54,7 @@ class Router {
      * @param   string $callback
      */
     public static function error($callback){
-    	self::$error_callback = $callback;
+        self::$error_callback = $callback;
     }
 
     /**
@@ -79,51 +81,52 @@ class Router {
 
         //grab the controller name and method call
         $segments = explode('@',$first);
-
+        
         //instanitate controller with optional msg (used for error_callback)
         
         $path = explode('\\',$segments[0]);
         
         foreach ($path as $k => $v){
-        	$path[$k] = ucfirst($path[$k]);
+            $path[$k] = ucfirst($path[$k]);
         }
         
-        $new_path = implode('\\', $path);
+        $new_path = self::convertToStudly( implode('\\', $path) );
+        
         
         if(!$path[1]){
-        	
-        	$new_path .= DEFAULT_CONTROLLER;
-        	$method = DEFAULT_METHOD;
-        	
+            
+            $new_path .= DEFAULT_CONTROLLER;
+            $method = DEFAULT_METHOD;
+            
         } else{
-        	
-        	$method = $segments[1];
-        	
+            
+            $method = self::convertToCamel( $segments[1] );
+            
         }
         
 
        //verifica se classe existe
        if(class_exists($new_path)){
-       	
-	       $controller = new $new_path($msg);       
-	
-	       if($matched == null){
-	
-	            //verifica se método existe
-	            if( method_exists($controller, $method) ){
-	            	$controller->$method($params);
-	             }else{
-	             	 self::invokeObject('Core\\Error@index');
-	             }
-	
-	        } else {
-	
-	            //call method and pass in array keys as params
-	            call_user_func_array(array($controller, $method), $matched);
-	        
-	        }
+        
+           $controller = new $new_path($msg);       
+    
+           if($matched == null){
+    
+                //verifica se método existe
+                if( method_exists($controller, $method) ){
+                    $controller->$method($params);
+                 }else{
+                     self::invokeObject('Core\\Error@index');
+                 }
+    
+            } else {
+    
+                //call method and pass in array keys as params
+                call_user_func_array(array($controller, $method), $matched);
+            
+            }
        }else{
-       		self::invokeObject('Core\\Error@index');
+            self::invokeObject('Core\\Error@index');
        }
     }
 
@@ -138,8 +141,8 @@ class Router {
         $searches = array_keys(static::$patterns);
         $replaces = array_values(static::$patterns);
 
-        self::$routes = str_replace('//','/',self::$routes);   
-
+        self::$routes = str_replace('//','/',self::$routes);  
+        
         $found_route = false;
 
         // parse query parameters
@@ -233,7 +236,7 @@ class Router {
             // end foreach
         }
 
-		// run the error callback if the route was not found
+        // run the error callback if the route was not found
         if (!$found_route) {
             if (!self::$error_callback) {
                 self::$error_callback = function() {
@@ -259,14 +262,40 @@ class Router {
     }
     
     public static function autoRun(){
-    	self::any('/', 'Controllers\\' . DEFAULT_CONTROLLER . '@'. DEFAULT_METHOD);
-    	
-    	self::any('/(:any)/?(:all)', function($c, $m) {
-    		$path = ($m) ? "Controllers\\{$c}@{$m}" : "Controllers\\{$c}@index";
-    		self::invokeObject($path);
-    	});
-    	
-    	self::run();
+        self::any('/', 'Controllers\\' . DEFAULT_CONTROLLER . '@'. DEFAULT_METHOD);
+        
+        self::any('/(:any)/?(:all)', function($c, $m) {
+            $path = ($m) ? "Controllers\\{$c}@{$m}" : "Controllers\\{$c}@index";
+            self::invokeObject($path);
+            
+        });
+        
+        self::run();
+    }
+    
+    public static function convertToStudly($string){
+        if( strpos($string, '-') !== false ){
+            
+            $string = ucwords(str_replace('-', ' ', $string));
+            $string = str_replace(' ', '', $string);
+            return ucfirst($string);
+            
+        }else{
+            return $string;
+        }
+    }
+    
+    // snake_case to camelCase
+    public static function convertToCamel($string){
+        if( strpos($string, '-') !== false ){
+            
+            $string = ucwords(str_replace('-', ' ', $string));
+            $string = str_replace(' ', '', $string);
+            return lcfirst($string);
+            
+        }else{
+            return $string;
+        }
     }
     
 }

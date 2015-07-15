@@ -189,7 +189,7 @@ class Encrypt
 		if (is_array($array)) {
 			
 			foreach ($array as $key => $value){
-				$array[$key][$index] = self::encrypt($array[$key][$index]);
+				$array[$key][$index] = self::convertID($array[$key][$index]);
 			}
 			
 			return $array;

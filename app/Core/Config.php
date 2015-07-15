@@ -35,13 +35,23 @@ class Config
         define('DATETIME_UPDATE', 'datetime_update');
         
         //Define chave de encriptação de dados
-        define('CHAVE_ENCRYPT', '20fe687d58d6295cd94ba4f4ffe4bab4');
+        define('CHAVE_ENCRYPT', 'bf');
 
         //Define título do site / projeto
         define('SITETITLE', 'Babita Framework V1');
 
         //Email do administrador para notificação de erros no sistema
         define('SITEEMAIL', 'fabio@fabioassuncao.com.br');
+
+        define('MAIL_IS_SMTP', true); //Habilita envio SMPT   
+        define('MAIL_SMTP_AUTH', true); // // Enable SMTP authentication
+        define('MAIL_IS_HTML', true);  // Set email format to HTML
+        define('MAIL_CHARSET', 'UTF-8');
+        define('MAIL_SMTP_SECURE', 'tls'); // Enable TLS encryption, `ssl` also accepted
+        define('MAIL_HOST', 'smtp.gmail.com'); //Servidor de envio
+        define('MAIL_PORT', '587'); //Porta de envio
+        define('MAIL_USER', 'fabio@fabioassuncao.com.br'); //Login do email de envio
+        define('MAIL_PASS', 'secret'); //Senha
 
         //Ativa a manipulação de erro personalizada
         set_exception_handler('Core\Logger::ExceptionHandler');

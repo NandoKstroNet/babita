@@ -48,6 +48,24 @@ class Validations {
 			return (substr($cpf, -2) == $d1.$d2)?true:false;
 		}
 	}
+	
+	public static function mask($val, $mask){
+	
+		$val = preg_replace("/[^0-9]/", "", $val);
+	
+		$maskared = '';
+		$k = 0;
+		for($i = 0; $i<=strlen($mask)-1; $i++){
+			if($mask[$i] == '#'){
+				if(isset($val[$k]))
+				 $maskared .= $val[$k++];
+			}else{
+				if(isset($mask[$i]))
+				 $maskared .= $mask[$i];
+			}
+		}
+		return $maskared;
+	}
 
 # CODIFICA PALAVRAS ATENTUADAS PARA ISO-8859-1
 	public static function encodeText($texto){

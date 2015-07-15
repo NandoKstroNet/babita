@@ -28,6 +28,41 @@ class Url
         exit;
     }
 
+    public static function request($url, $method, $data = array(), $fullpath = false)
+    {
+        
+        if ($fullpath == false) {
+            $url = DIR . $url;
+        }
+        
+        ?>
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>Redirecting...</title>
+        </head>
+        <body>
+            Redirecting...
+            <form id="redirect" method="<?=$method?>" action="<?=$url?>">
+                <?php
+                if ( !is_null($data) ) {
+                    foreach ($data as $k => $v) {
+                        echo "<input type=\"hidden\" name=\"$k\" value=\"$v\">";
+                    }
+                }
+                ?>
+            </form>
+            <script type="text/javascript">
+               window.onload = function() {
+                 document.getElementById("redirect").submit();
+               };
+            </script>
+        </body>
+        </html>
+        <?php
+    }
+
     /**
      * created the absolute address to the template folder
      * @return string url to template folder

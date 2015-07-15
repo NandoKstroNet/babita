@@ -13,6 +13,6 @@ use \Core\Router;
 // 	Router::invokeObject($path);
 // });
 
-// Router::run();
+//Router::run();
 
 Router::autoRun();
